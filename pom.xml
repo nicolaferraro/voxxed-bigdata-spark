@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>me.nicolaferraro.spark</groupId>
+    <artifactId>spark-kubernetes-quickstart</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <!-- Source config -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <!-- Dependency versions -->
+        <spark.version>2.0.1</spark.version>
+
+        <!-- Plugin versions -->
+        <!--<fabric8.maven.plugin.version>3.2.20</fabric8.maven.plugin.version>-->
+        <fabric8.maven.plugin.version>3.2-SNAPSHOT</fabric8.maven.plugin.version>
+        <maven.shade.plugin.version>3.0.0</maven.shade.plugin.version>
+        <scala.maven.plugin.version>3.2.1</scala.maven.plugin.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-core_2.11</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <sourceDirectory>src/main/scala</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>${scala.maven.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <args>
+                        <!-- work-around for https://issues.scala-lang.org/browse/SI-8358 -->
+                        <arg>-nobootcp</arg>
+                    </args>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>${maven.shade.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <transformers>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                            <mainClass>spark.kubernetes.quickstart.Hello</mainClass>
+                        </transformer>
+                    </transformers>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>fabric8-maven-plugin</artifactId>
+                <version>${fabric8.maven.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>resource</goal>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <generator>
+                        <config>
+                            <java-exec>
+                                <from>radanalyticsio/radanalytics-java-spark</from>
+                            </java-exec>
+                        </config>
+                    </generator>
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+    </build>
+
+</project>

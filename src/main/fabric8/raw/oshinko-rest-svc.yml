@@ -1,0 +1,23 @@
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  annotations:
+  labels:
+    name: "oshinko-rest"
+    provider: "fabric8"
+    project: "oshinko-rest"
+    group: "io.fabric8.ipaas.apps"
+    expose: "false"
+  name: "oshinko-rest"
+spec:
+  ports:
+  - name: o-rest-port
+    port: 8081
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    name: oshinko-rest
+    project: "oshinko-rest"
+    provider: "fabric8"
+    group: "io.fabric8.ipaas.apps"

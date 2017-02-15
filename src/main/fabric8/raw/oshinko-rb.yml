@@ -1,0 +1,7 @@
+metadata:
+  name: oshinko
+roleRef:
+  name: admin
+subjects:
+- kind: ServiceAccount
+  name: oshinko

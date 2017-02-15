@@ -1,0 +1,93 @@
+apiVersion: "extensions/v1beta1"
+kind: "Deployment"
+metadata:
+  labels:
+    provider: "fabric8"
+    group: "io.fabric8.ipaas.apps"
+  name: "oshinko"
+spec:
+  replicas: 1
+  selector:
+    name: oshinko-rest
+    matchLabels:
+      provider: "fabric8"
+      project: "oshinko-rest"
+      group: "io.fabric8.ipaas.apps"
+  template:
+    metadata:
+      labels:
+        name: oshinko-rest
+        provider: "fabric8"
+        project: "oshinko-rest"
+        group: "io.fabric8.ipaas.apps"
+    spec:
+      containers:
+      - env:
+        - name: OSHINKO_SERVER_PORT
+          value: "8081"
+        - name: OSHINKO_REST_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: OSHINKO_CLUSTER_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: OSHINKO_CLUSTER_IMAGE
+          value: radanalyticsio/openshift-spark
+        - name: OSHINKO_WEB_NAME
+          value: oshinko-web
+        image: radanalyticsio/oshinko-rest
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8081
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: oshinko-rest
+        ports:
+        - containerPort: 8081
+          name: o-rest-port
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8081
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+      - env:
+        - name: OPENSHIFT_OSHINKO_REST
+          value: 127.0.0.1
+        - name: OPENSHIFT_OSHINKO_REST_PORT
+          value: "8081"
+        image: radanalyticsio/oshinko-webui
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: oshinko-web
+        ports:
+        - containerPort: 8080
+          name: o-web-port
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+      serviceAccount: oshinko
