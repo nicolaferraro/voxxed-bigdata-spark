@@ -14,11 +14,10 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <!-- Dependency versions -->
-        <spark.version>2.0.1</spark.version>
+        <spark.version>2.1.0</spark.version>
 
         <!-- Plugin versions -->
-        <!--<fabric8.maven.plugin.version>3.2.20</fabric8.maven.plugin.version>-->
-        <fabric8.maven.plugin.version>3.2-SNAPSHOT</fabric8.maven.plugin.version>
+        <fabric8.maven.plugin.version>3.2.28</fabric8.maven.plugin.version>
         <maven.shade.plugin.version>3.0.0</maven.shade.plugin.version>
         <scala.maven.plugin.version>3.2.1</scala.maven.plugin.version>
     </properties>
@@ -28,6 +27,7 @@
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_2.11</artifactId>
             <version>${spark.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -68,11 +68,6 @@
                 </executions>
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <transformers>
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <mainClass>spark.kubernetes.quickstart.Hello</mainClass>
-                        </transformer>
-                    </transformers>
                 </configuration>
             </plugin>
 
@@ -89,16 +84,34 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <resources>
+                        <env>
+                            <!-- Name of the Oshinko cluster-->
+                            <OSHINKO_CLUSTER_NAME>mycluster</OSHINKO_CLUSTER_NAME>
+
+                            <!-- Reference to the cluster configmap in src/main/fabric8/cluster-cm.yml -->
+                            <OSHINKO_NAMED_CONFIG>myconfig</OSHINKO_NAMED_CONFIG>
+
+                            <!-- Do not delete the cluster when the pod terminates -->
+                            <OSHINKO_DEL_CLUSTER>false</OSHINKO_DEL_CLUSTER>
+
+                            <!-- Name of the jar file -->
+                            <APP_FILE>${build.finalName}.jar</APP_FILE>
+
+                            <!-- Application main class to run -->
+                            <APP_MAIN_CLASS>spark.kubernetes.quickstart.Hello</APP_MAIN_CLASS>
+                        </env>
+                    </resources>
                     <generator>
                         <config>
                             <java-exec>
+                                <!-- The radanalytics java-spark image -->
                                 <from>radanalyticsio/radanalytics-java-spark</from>
                             </java-exec>
                         </config>
                     </generator>
                 </configuration>
             </plugin>
-
 
         </plugins>
     </build>
