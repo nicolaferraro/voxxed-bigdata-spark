@@ -1,5 +1,5 @@
 metadata:
   name: myconfig
 data:
-  workercount: "4"
+  workercount: "3"
   mastercount: "1"
