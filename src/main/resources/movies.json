@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "title": "The Shawshank Redemption",
+    "genres": ["Crime", "Drama"]
+  },
+  {
+    "id": 2,
+    "title": "The Godfather",
+    "genres": ["Crime", "Drama"]
+  },
+  {
+    "id": 3,
+    "title": "The Godfather: Part II",
+    "genres": ["Crime", "Drama"]
+  },
+  {
+    "id": 4,
+    "title": "The Dark Knight",
+    "genres": ["Action", "Crime", "Drama", "Thriller"]
+  },
+  {
+    "id": 5,
+    "title": "12 Angry Men",
+    "genres": ["Crime", "Drama"]
+  },
+  {
+    "id": 6,
+    "title": "Schindler's List",
+    "genres": ["Biography", "History", "Drama"]
+  },
+  {
+    "id": 7,
+    "title": "Pulp Fiction",
+    "genres": ["Crime", "Drama"]
+  },
+  {
+    "id": 8,
+    "title": "The Lord of the Rings: The Return of the King",
+    "genres": ["Adventure", "Drama", "Fantasy"]
+  },
+  {
+    "id": 9,
+    "title": "The Good, the Bad and the Ugly",
+    "genres": ["Western"]
+  },
+  {
+    "id": 10,
+    "title": "Fight Club",
+    "genres": ["Drama"]
+  },
+  {
+    "id": 11,
+    "title": "The Lord of the Rings: The Fellowship of the Ring",
+    "genres": ["Adventure", "Drama", "Fantasy"]
+  },
+  {
+    "id": 12,
+    "title": "Star Wars: Episode V - The Empire Strikes Back",
+    "genres": ["Action", "Adventure", "Fantasy", "Sci-Fi"]
+  }
+]

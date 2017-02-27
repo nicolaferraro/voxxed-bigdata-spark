@@ -1,4 +1,4 @@
-package spark.kubernetes.quickstart
+package com.voxxed.bigdata.spark
 
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
@@ -10,7 +10,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 /**
   *
   */
-object Hello {
+object Stream {
 
   def main(args: Array[String]): Unit = {
 
