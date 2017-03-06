@@ -114,6 +114,9 @@
 
                             <!-- Application main class to run -->
                             <APP_MAIN_CLASS>com.voxxed.bigdata.spark.Stream</APP_MAIN_CLASS>
+
+                            <!-- Alternative settings: add packages here and mark them as provided (it will download them from internet) -->
+                            <!--<SPARK_OPTIONS>&#45;&#45;packages org.apache.spark:spark-streaming-kafka-0-10_2.11:${spark.version}</SPARK_OPTIONS>-->
                         </env>
                     </resources>
                     <generator>
