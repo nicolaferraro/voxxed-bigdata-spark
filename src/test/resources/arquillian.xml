@@ -1,0 +1,12 @@
+<arquillian xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://jboss.org/schema/arquillian"
+            xsi:schemaLocation="http://jboss.org/schema/arquillian
+               http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+
+    <extension qualifier="kubernetes">
+        <!-- Must run `mvn install` on voxxed-bigdata-kafka before -->
+        <!-- Must refer to a released version (not SNAPSHOT) in a real project -->
+        <property name="env.dependencies">mvn:com.voxxed.bigdata/voxxed-bigdata-kafka/1.0-SNAPSHOT/yml/openshift</property>
+    </extension>
+
+</arquillian>

@@ -1,5 +1,6 @@
 package com.voxxed.bigdata.spark
 
+import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 import org.apache.kafka.common.serialization.{StringDeserializer, StringSerializer}
 
@@ -30,5 +31,10 @@ object KafkaSupport {
 
   def send(topic: String, key: String, value: String): Unit = producer.send(new ProducerRecord[String, String](topic, key, value))
 
+  def newConsumer(topic: String) = {
+    val consumer = new KafkaConsumer[String, String](kafkaParams)
+    consumer.subscribe(Seq(topic))
+    consumer
+  }
 
 }
