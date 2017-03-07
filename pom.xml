@@ -58,6 +58,14 @@
 
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>
+
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
         <plugins>
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
