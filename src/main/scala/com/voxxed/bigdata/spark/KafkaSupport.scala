@@ -1,10 +1,10 @@
 package com.voxxed.bigdata.spark
 
-import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 import org.apache.kafka.common.serialization.{StringDeserializer, StringSerializer}
 
 import scala.collection.JavaConversions._
+import scala.util.Random
 
 object KafkaSupport {
 
@@ -14,7 +14,9 @@ object KafkaSupport {
       "key.deserializer" -> classOf[StringDeserializer],
       "value.serializer" -> classOf[StringSerializer],
       "value.deserializer" -> classOf[StringDeserializer],
-      "group.id" -> "spark",
+      "group.id" -> ("spark-" + Random.nextLong()),
+      // Use a random group id at each restart: this is a demo configuration
+      // In production you may want to use a fixed group and checkpoints
       "auto.offset.reset" -> "earliest",
       "enable.auto.commit" -> (false: java.lang.Boolean)
     )

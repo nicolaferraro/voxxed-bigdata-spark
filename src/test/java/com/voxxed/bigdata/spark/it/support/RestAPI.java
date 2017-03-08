@@ -36,18 +36,18 @@ public class RestAPI {
     private String host;
 
     public RestAPI(KubernetesClient client) {
-        int trial = 5;
+        int retries = 5;
         try {
             this.host = client.services().withName("voxxed-bigdata-web").get().getSpec().getClusterIP();
             if (this.host == null) {
                 throw new RuntimeException("Host is null");
             }
         } catch (Exception e) {
-            trial--;
+            retries--;
             try {
-                Thread.sleep(2000);
+                Thread.sleep(5000);
             } catch (Exception te) {}
-            if (trial <= 0) {
+            if (retries <= 0) {
                 throw new RuntimeException("Cannot find route to probe", e);
             }
         }
@@ -56,7 +56,8 @@ public class RestAPI {
     public void addRating(Event event) {
         logger.info("Adding rating: {}", event);
         HttpResponse<String> res;
-        for (int i=0; i < 5; i++) {
+        int retries = 20;
+        for (int i=0; i < retries; i++) {
             try {
                 res = Unirest.post("http://" + host + "/api/ratings")
                         .body(event.toJson())
@@ -67,13 +68,14 @@ public class RestAPI {
             } catch (UnirestException e) {
                 if (e.getCause() != null && e.getCause() instanceof HttpHostConnectException) {
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep(5000);
                     } catch (InterruptedException te) {}
                 }
             } catch (Exception ex) {
                 throw new RuntimeException("Cannot post", ex);
             }
         }
+        throw new RuntimeException("Cannot post after " + retries + " retries");
     }
 
     public Recommendation getRecommendation(long userId, long timeout) { // multiple of 5 seconds
@@ -94,7 +96,7 @@ public class RestAPI {
             }
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (Exception te) {}
         }
         return null;

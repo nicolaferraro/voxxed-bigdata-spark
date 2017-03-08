@@ -30,7 +30,7 @@ object Stream {
     val events = source.window(watchWindow)
       .map(e => ((e.userId, e.itemId), e))
       .groupByKey()
-      .flatMap({case ((user, item), events) => events.filter(e => !events.exists(e2 => e2.timestamp > e.timestamp))})
+      .flatMap({case ((user, item), evts) => evts.filter(e => !evts.exists(e2 => e2.timestamp > e.timestamp))})
       .cache()
 
     val state = events
@@ -38,7 +38,7 @@ object Stream {
       .groupByKey()
       .map({ case (user, items) => items.toList })
       .flatMap(list => {
-        val prod = for(x <- list; y <- list; if (x != y)) yield (x, y)
+        val prod = for(x <- list; y <- list; if x != y) yield (x, y)
         prod.map({ case (ev1, ev2) => ((ev1.itemId, ev2.itemId), BigDecimal(ev1.rating) - BigDecimal(ev2.rating)) })
       })
       .groupByKey()
@@ -77,7 +77,7 @@ object Stream {
       // Do not use collect() in production
       KafkaSupport.send("recommendations", recomm.userId.toString, recomm.toJson)
     }))
-//    topByUser.print()
+    events.print()
 
     ssc.start()
     ssc.awaitTermination()

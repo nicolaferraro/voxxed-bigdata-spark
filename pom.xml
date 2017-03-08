@@ -25,6 +25,7 @@
         <maven-failsafe-plugin.version>2.19.1</maven-failsafe-plugin.version>
         <maven.shade.plugin.version>3.0.0</maven.shade.plugin.version>
         <scala.maven.plugin.version>3.2.1</scala.maven.plugin.version>
+        <exec-maven-plugin-version>1.6.0</exec-maven-plugin-version>
     </properties>
 
     <dependencies>
@@ -190,6 +191,22 @@
                                 </goals>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec-maven-plugin-version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <phase>initialize</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <executable>./prepare-testing.sh</executable>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
