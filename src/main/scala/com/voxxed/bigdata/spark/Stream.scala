@@ -69,7 +69,7 @@ object Stream {
 
     val topByUser = filteredRecommendations
       .groupByKey()
-      .mapValues(sugg => sugg.toList.sortBy({ case (movie, prediction) => -prediction }).map(_._1).take(topK))
+      .mapValues(sugg => sugg.toList.sortBy({ case (movie, prediction) => (-prediction, movie) }).map(_._1).take(topK))
       .map({ case (user, items) => Recommendation(user, items) })
 
 
