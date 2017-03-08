@@ -5,7 +5,10 @@
 
     <extension qualifier="kubernetes">
         <!-- Must run `mvn install` on voxxed-bigdata-kafka before -->
-        <property name="env.dependencies">mvn:com.voxxed.bigdata/voxxed-bigdata-kafka/${project.version}/yml/openshift</property>
+        <property name="env.dependencies">
+            mvn:com.voxxed.bigdata/voxxed-bigdata-kafka/${project.version}/yml/openshift
+            mvn:com.voxxed.bigdata/voxxed-bigdata-web/${project.version}/yml/openshift
+        </property>
     </extension>
 
 </arquillian>

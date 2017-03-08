@@ -72,7 +72,11 @@ object Stream {
       .mapValues(sugg => sugg.toList.sortBy({ case (movie, prediction) => -prediction }).map(_._1).take(topK))
       .map({ case (user, items) => Recommendation(user, items) })
 
-    topByUser.foreachRDD(rdd => rdd.foreach(recomm => KafkaSupport.send("recommendations", recomm.userId.toString, recomm.toJson)))
+
+    topByUser.foreachRDD(rdd => rdd.collect().toList.foreach(recomm => {
+      // Do not use collect() in production
+      KafkaSupport.send("recommendations", recomm.userId.toString, recomm.toJson)
+    }))
 //    topByUser.print()
 
     ssc.start()

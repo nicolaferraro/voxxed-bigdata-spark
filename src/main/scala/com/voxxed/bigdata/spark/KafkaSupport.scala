@@ -19,6 +19,8 @@ object KafkaSupport {
       "enable.auto.commit" -> (false: java.lang.Boolean)
     )
 
+  def kafkaParamsWithServer(servers: String): Map[String, Object] = kafkaParams.updated("bootstrap.servers", servers)
+
 
   private lazy val producer = {
     val producer = new KafkaProducer[String, String](kafkaParams)
@@ -28,13 +30,6 @@ object KafkaSupport {
     producer
   }
 
-
   def send(topic: String, key: String, value: String): Unit = producer.send(new ProducerRecord[String, String](topic, key, value))
-
-  def newConsumer(topic: String) = {
-    val consumer = new KafkaConsumer[String, String](kafkaParams)
-    consumer.subscribe(Seq(topic))
-    consumer
-  }
 
 }
