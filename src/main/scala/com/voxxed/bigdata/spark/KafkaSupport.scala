@@ -1,5 +1,7 @@
 package com.voxxed.bigdata.spark
 
+import kafka.admin.AdminUtils
+import kafka.utils.ZkUtils
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 import org.apache.kafka.common.serialization.{StringDeserializer, StringSerializer}
 
@@ -30,6 +32,17 @@ object KafkaSupport {
       producer.close()
     }
     producer
+  }
+
+  def createTopicIfNotPresent(name: String): Unit = {
+    // This is a demo, so it's ok to configure it here...
+    val zkUtils = ZkUtils("zookeeper:2181", 10000, 10000, isZkSecurityEnabled = false)
+    try {
+      AdminUtils.createTopic(zkUtils, name, 1, 1)
+    } catch {case e: Exception =>
+        e.printStackTrace()
+        // ignore
+    }
   }
 
   def send(topic: String, key: String, value: String): Unit = producer.send(new ProducerRecord[String, String](topic, key, value))

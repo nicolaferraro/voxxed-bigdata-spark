@@ -18,6 +18,9 @@ object Stream {
     val watchWindow = Minutes(10)
     val topK = 10
 
+    KafkaSupport.createTopicIfNotPresent("stars")
+    KafkaSupport.createTopicIfNotPresent("recommendations")
+
 //    val source = ssc.socketTextStream("localhost", 9999)
 //      .map(Event.fromJson)
 
