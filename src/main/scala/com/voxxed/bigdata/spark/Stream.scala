@@ -13,7 +13,7 @@ object Stream {
 
     val conf = new SparkConf().setAppName("voxxed-bigdata-spark")
     val sc = new SparkContext(conf)
-    val ssc = new StreamingContext(sc, Seconds(10))
+    val ssc = new StreamingContext(sc, Seconds(5))
 
     val watchWindow = Minutes(10)
     val topK = 10
