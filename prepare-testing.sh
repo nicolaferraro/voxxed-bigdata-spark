@@ -2,6 +2,6 @@
 
 oc new-project testing
 oc create -f http://radanalytics.io/resources.yaml
-#oc create -f ./oshinko-resources.yaml
-#oc new-app oshinko-webui
+
+# Adding grant to the "developer" user
 oc adm policy add-role-to-user edit developer

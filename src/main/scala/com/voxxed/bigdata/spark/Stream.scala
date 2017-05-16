@@ -76,11 +76,13 @@ object Stream {
       .map({ case (user, items) => Recommendation(user, items) })
 
 
-    topByUser.foreachRDD(rdd => rdd.collect().toList.foreach(recomm => {
-      // Do not use collect() in production
-      KafkaSupport.send("recommendations", recomm.userId.toString, recomm.toJson)
-    }))
-    events.print()
+    topByUser.foreachRDD(rdd => {
+      rdd.foreachPartition(rcs => {
+        rcs.foreach(recomm => KafkaSupport.send("recommendations", recomm.userId.toString, recomm.toJson))
+      })
+    })
+
+    //events.print()
 
     ssc.start()
     ssc.awaitTermination()
